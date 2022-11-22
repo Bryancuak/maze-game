@@ -1,8 +1,10 @@
 import processing.sound.*;
-int x= 1;
-int y=1;
-PImage arriba, abajo, derecha, izquierda, lab;
-SoundFile file;
+int x= 275;
+int y=8;
+int t=0;
+PImage arriba, abajo, derecha, izquierda, lab, langosta;
+SoundFile file, fil3;
+boolean change = false;
 
 void setup(){
   size(600,600);
@@ -12,9 +14,11 @@ void setup(){
   abajo=loadImage("slimeuwu.png");
   derecha=loadImage("slimeuwu.png");
   izquierda=loadImage("slimeuwuizq.png");
-  lab=loadImage("maze2.jpg");
+  lab=loadImage("20.png");
+  langosta=loadImage("langosta.jpg");
   
-  file = new SoundFile(this, "song.mp3");
+  file = new SoundFile(this, "8BitAdventure.mp3");
+  fil3 = new SoundFile(this, "scream2.mp3");
   file.loop();
   
 }
@@ -23,40 +27,35 @@ void draw(){
   float touch = red(get(x,y));
   background(255);
   image(lab, 5, 5);
-  lab.resize(600, 600);
+  lab.resize(580, 550);
   println(red(get(mouseX, mouseY)));
+  
+  if(change == true){
+    laberinto2();
+  }
   
   if(keyPressed && (key==CODED)){
     if(keyCode == LEFT){
-       x-=3;
+       x-=2;
        image(izquierda, x, y);
     }else if(keyCode==RIGHT){
-      x+=3;
+      x+=2;
       image(derecha, x, y);
     }
     if(keyCode ==UP){
-      y-=3;
+      y-=2;
       image(arriba, x, y);
       
     }else if(keyCode== DOWN){
-      y+=3;
+      y+=2;
       image(abajo, x, y);
-      
     }
-    if (keyCode== DOWN && keyCode == LEFT){
-      image(abajo, x, y);
-      x-=10;
-      y-=10;
-    }
+    //if(key== 'q'){
+    //  change=false;
+    //}
     
   }
-  if (keyPressed){
-  if (key ==' '){
-      fill(#FCFCFC);
-      ellipse(x+10, y+10, 10, 10);
-    }
-  }
-  
+
   if(x<3){
     x+=5;
   }
@@ -70,21 +69,35 @@ void draw(){
   if(y>570){
     y-=5;
   }
-  //if(x<256 && x>34 && y>40 && y<46){
-  //   if(keyCode ==UP){
-  //     y+=2;
-  //   }
-  //  y-=5;
-  //}
-  if(touch < 255) {
-    x = 1;
-    y = 150;
+  
+  //condición para que no se toquen las paredes del laberinto 
+  if(touch == 0) {
+    x = 275;
+    y = 0;
+    //fil3.play();
+    //langosta.resize(600, 600);
+    //image(langosta, 1, 1);
+    //change=true;
+    
   }
-   //if(keyCode==RIGHT == false || keyCode==LEFT == false || keyCode==UP == false || keyCode==DOWN == false){
-   //  image(abajo, x, y);
-   //}
+  
+  
+  if(x>=320  && y>=560 ){
+    change=true;
+  }
+  
+  //do{
+  //  t+=1;
+  //}while(change==false);
+  
+ 
+ 
+
    if (keyPressed == false){
   image(abajo, x, y);
 }
+
+//fill(0);
+// text("tu puntaje es: " +t, 20, 570 );
   
 }
